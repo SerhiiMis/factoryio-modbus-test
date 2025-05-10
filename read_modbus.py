@@ -1,4 +1,8 @@
 from pymodbus.client.sync import ModbusTcpClient
+import logging
+
+# Setup logging (set before logging anything)
+logging.basicConfig(filename='modbus_log.txt', level=logging.INFO, format='%(asctime)s %(message)s')
 
 # Connect to Factory I/O Modbus server
 client = ModbusTcpClient('127.0.0.1', port=502)
@@ -8,8 +12,8 @@ client.connect()
 result = client.read_discrete_inputs(address=0, count=10, unit=1)
 
 if result.isError():
-    print("Read error:", result)
+    logging.error(f"Read error: {result}")
 else:
-    print("Discrete Inputs:", result.bits)
+    logging.info(f"Read values: {result.bits}")
 
 client.close()
